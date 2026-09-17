@@ -51,10 +51,28 @@ async function searchAndAddCity(data: AppData): Promise<void> {
     return;
   }
   try {
-    const result = await geocodeCity(name);
-    if (!result) {
+    const results = await geocodeCity(name);
+    const [first] = results;
+    if (!first) {
       printInfo(`No results found for "${name}".`);
       return;
+    }
+    let result = first;
+    if (results.length > 1) {
+      results.forEach((r, index) => {
+        console.log(`  ${index + 1}. ${cityLabel(r)}`);
+      });
+      const choice = await ask("  Number of the city to add (0 to cancel): ");
+      if (choice === "0") {
+        printInfo("Cancelled.");
+        return;
+      }
+      const chosen = results[Number.parseInt(choice, 10) - 1];
+      if (!chosen) {
+        printInfo("Invalid option.");
+        return;
+      }
+      result = chosen;
     }
     if (data.cities.some((c) => c.id === result.id)) {
       printInfo(`${result.name} is already registered.`);
