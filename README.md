@@ -7,6 +7,7 @@ The goal of this application is to create a console application that asks us to 
 - Enter the name of a city.
 - Save a default city.
 - Register several other cities to search the weather in those other cities.
+- List the saved cities.
 
 ## Stack
 
@@ -42,6 +43,7 @@ This is the appearance we want to create
   3. Search and add city
   4. Delete city
   5. Set default city
+  6. List saved cities
   8. Settings (°C)
   9. Exit
 ════════════════════════════════════════
