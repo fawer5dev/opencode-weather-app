@@ -9,10 +9,10 @@ export interface GeocodingResult {
   longitude: number;
 }
 
-export async function geocodeCity(name: string): Promise<GeocodingResult | null> {
+export async function geocodeCity(name: string): Promise<GeocodingResult[]> {
   const params = new URLSearchParams({
     name,
-    count: "1",
+    count: "5",
     language: "es",
     format: "json",
   });
@@ -21,5 +21,5 @@ export async function geocodeCity(name: string): Promise<GeocodingResult | null>
     throw new Error(`Geocoding request failed (HTTP ${res.status})`);
   }
   const data = (await res.json()) as { results?: GeocodingResult[] };
-  return data.results?.[0] ?? null;
+  return data.results ?? [];
 }

@@ -1,21 +1,32 @@
-const RESET = "\x1b[0m";
+const CYAN = "\u001B[36m";
+const YELLOW = "\u001B[33m";
+const GREEN = "\u001B[32m";
+const RED = "\u001B[31m";
+const RESET = "\u001B[0m";
 
-function colorize(code: string, text: string): string {
-  return `${code}${text}${RESET}`;
+const enabled = (() => {
+  if (process.env.NO_COLOR !== undefined) return false;
+  const force = process.env.FORCE_COLOR;
+  if (force !== undefined) return force !== "0";
+  return process.stdout.isTTY === true;
+})();
+
+function wrap(code: string, text: string): string {
+  return enabled ? `${code}${text}${RESET}` : text;
 }
 
 export function cyan(text: string): string {
-  return colorize("\x1b[36m", text);
+  return wrap(CYAN, text);
 }
 
 export function yellow(text: string): string {
-  return colorize("\x1b[33m", text);
+  return wrap(YELLOW, text);
 }
 
 export function green(text: string): string {
-  return colorize("\x1b[32m", text);
+  return wrap(GREEN, text);
 }
 
 export function red(text: string): string {
-  return colorize("\x1b[31m", text);
+  return wrap(RED, text);
 }
