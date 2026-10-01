@@ -5,14 +5,14 @@ Weather CLI exercise built with Bun + TypeScript. Entry point is `src/index.ts`;
 ## Toolchain
 
 - Use Bun, never Node/npm/npx: `bun <file>`, `bun install`, `bun test`, `bunx <pkg>`. Full Bun guidance lives in `bun-instructions.md` (Bun globals, `Bun.file`, `bun:sqlite`, auto `.env` loading).
-- `package.json` only defines `start`/`dev`/`build` scripts — run files directly otherwise, e.g. `bun src/index.ts`.
+- `package.json` defines `start`/`dev`/`test`/`build` scripts — run files directly otherwise, e.g. `bun src/index.ts`.
 
 ## Commands
 
 - Run app: `bun src/index.ts`
 - Typecheck: `bunx tsc` (tsconfig sets `noEmit`; there is no separate lint/typecheck script)
-- Tests: `bun test` (none exist yet; use `bun:test` when adding them)
-- Build binary: `bun build --compile src/index.ts --outfile weather`
+- Tests: `bun test` (suite lives in `src/test/`, mirroring `src/`; shared helpers in `src/test/helpers/`: `setup.ts` mocks `src/utils/constants` paths to a temp HOME and `node:readline/promises` via `setAnswers()`, `fetchMock.ts` replaces `globalThis.fetch`, `consoleSpy.ts` captures `console.log`; `bunfig.toml` preloads `setup.ts` so module mocks apply before any test file imports `src/`)
+- Build binary: `bun run build` — gated: runs `bun test` first and aborts if any test fails; raw compile is `bun build --compile src/index.ts --outfile weather`
 
 ## tsconfig rules that affect how you write code
 
